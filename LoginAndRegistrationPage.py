@@ -1,7 +1,132 @@
 from tkinter import *
 from PIL import ImageTk, Image  # type "Pip install pillow" in your terminal to install ImageTk and Image module
-import sqlite3
 from tkinter import messagebox
+
+
+
+
+def show_frame(frame):
+    frame.tkraise()
+
+    # function for show and hide password
+def password_command():
+    if password_entry1.cget('show') == '•':
+        password_entry1.config(show='')
+        password_entry.config(show='')
+        confirmPassword_entry.config(show='')
+    else:
+        password_entry1.config(show='•')
+        password_entry.config(show='•')
+        confirmPassword_entry.config(show='•')
+
+def login():
+    # cursor.execute(find_user, [(email_entry.get()), (password_entry1.get())])
+
+    result = False
+    if result:
+        messagebox.showinfo("Success", 'Logged in Successfully.')
+    else:
+        messagebox.showerror("Failed", "Wrong Login details, please try again.")
+
+# def password_command2():
+#     if password_entry.cget('show') == '•':
+#         password_entry.config(show='')
+#     else:
+#         password_entry.config(show='•')
+
+def forgot_password():
+    win = Toplevel()
+    window_width = 350
+    window_height = 350
+    screen_width = win.winfo_screenwidth()
+    screen_height = win.winfo_screenheight()
+    position_top = int(screen_height / 4 - window_height / 4)
+    position_right = int(screen_width / 2 - window_width / 2)
+    win.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
+    win.title('Forgot Password')
+    win.iconbitmap('images\\aa.ico')
+    win.configure(background='#f8f8f8')
+    win.resizable(0, 0)
+
+    # Variables
+    email = StringVar()
+    password = StringVar()
+    confirmPassword = StringVar()
+
+    # ====== Email ====================
+    email_entry2 = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2,
+                         textvariable=email)
+    email_entry2.place(x=40, y=30, width=256, height=34)
+    email_entry2.config(highlightbackground="black", highlightcolor="black")
+    email_label2 = Label(win, text='• Email account', fg="#89898b", bg='#f8f8f8',
+                         font=("yu gothic ui", 11, 'bold'))
+    email_label2.place(x=40, y=0)
+
+    # ====  New Password ==================
+    new_password_entry = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2,
+                               textvariable=password)
+    new_password_entry.place(x=40, y=110, width=256, height=34)
+    new_password_entry.config(highlightbackground="black", highlightcolor="black")
+    new_password_label = Label(win, text='• New Password', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
+    new_password_label.place(x=40, y=80)
+
+    # ====== checkbutton ==============
+    checkButton = Checkbutton(win, bg='#f8f8f8', command=password_command, text='show password')
+    checkButton.place(x=40, y=150)
+
+    # ====  Confirm Password ==================
+    confirm_password_entry = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2
+                                   , textvariable=confirmPassword)
+    confirm_password_entry.place(x=40, y=220, width=256, height=34)
+    confirm_password_entry.config(highlightbackground="black", highlightcolor="black")
+    confirm_password_label = Label(win, text='• Confirm Password', fg="#89898b", bg='#f8f8f8',
+                                   font=("yu gothic ui", 11, 'bold'))
+    confirm_password_label.place(x=40, y=180)
+
+    # ======= Update password Button ============
+    update_pass = Button(win, fg='#f8f8f8', text='Update Password', bg='#1b87d2', font=("yu gothic ui bold", 14),
+                         cursor='hand2', activebackground='#1b87d2', command=lambda: change_password())
+    update_pass.place(x=40, y=260, width=256, height=50)
+
+    # ========= DATABASE CONNECTION FOR FORGOT PASSWORD=====================
+    def change_password():
+        if new_password_entry.get() == confirm_password_entry.get():
+            messagebox.showinfo('Congrats', 'Password changed successfully')
+        else:
+            messagebox.showerror('Error!', "Passwords didn't match")
+
+def submit():
+    check_counter = 0
+    warn = ""
+    if name_entry.get() == "":
+        warn = "Full Name can't be empty"
+    else:
+        check_counter += 1
+
+    if email_entry.get() == "":
+        warn = "Email Field can't be empty"
+    else:
+        check_counter += 1
+
+    if password_entry.get() == "":
+        warn = "Password can't be empty"
+    else:
+        check_counter += 1
+
+    if confirmPassword_entry.get() == "":
+        warn = "Sorry, can't sign up make sure all fields are complete"
+    else:
+        check_counter += 1
+
+    if password_entry.get() != confirmPassword_entry.get():
+        warn = "Passwords didn't match!"
+    else:
+        check_counter += 1
+
+    if check_counter == 5:
+        messagebox.showinfo("Success", "New account created successfully")
+    else:
+        messagebox.showerror('Error', warn)
 
 window = Tk()
 window.rowconfigure(0, weight=1)
@@ -20,16 +145,6 @@ RegistrationPage = Frame(window)
 
 for frame in (LoginPage, RegistrationPage):
     frame.grid(row=0, column=0, sticky='nsew')
-
-
-def show_frame(frame):
-    frame.tkraise()
-
-# def password_command2():
-#     if password_entry.cget('show') == '•':
-#         password_entry.config(show='')
-#     else:
-#         password_entry.config(show='•')
 
 
 show_frame(LoginPage)
@@ -76,16 +191,7 @@ password_label = Label(design_frame4, text='• Password', fg="#89898b", bg='#f8
 password_label.place(x=130, y=220)
 
 
-# function for show and hide password
-def password_command():
-    if password_entry1.cget('show') == '•':
-        password_entry1.config(show='')
-        password_entry.config(show='')
-        confirmPassword_entry.config(show='')
-    else:
-        password_entry1.config(show='•')
-        password_entry.config(show='•')
-        confirmPassword_entry.config(show='•')
+
 
 
 # ====== checkbutton ==============
@@ -146,27 +252,7 @@ side_image_label.image = photo
 side_image_label.place(x=50, y=140)
 
 
-# ============ LOGIN DATABASE CONNECTION =========
-connection = sqlite3.connect('RegLog.db')
-cur = connection.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS RegLog(Email TEXT PRIMARY KEY, FullName TEXT, Password TEXT, "
-            "ConfirmPassword TEXT)")
-connection.commit()
-connection.close()
 
-
-def login():
-    conn = sqlite3.connect("RegLog.db")
-    cursor = conn.cursor()
-
-    find_user = 'SELECT * FROM RegLog WHERE Email = ? and Password = ?'
-    cursor.execute(find_user, [(email_entry.get()), (password_entry1.get())])
-
-    result = cursor.fetchall()
-    if result:
-        messagebox.showinfo("Success", 'Logged in Successfully.')
-    else:
-        messagebox.showerror("Failed", "Wrong Login details, please try again.")
 
 
 # ===================================================================================================================
@@ -175,75 +261,6 @@ def login():
 # ===================================================================================================================
 # ===================================================================================================================
 
-
-def forgot_password():
-    win = Toplevel()
-    window_width = 350
-    window_height = 350
-    screen_width = win.winfo_screenwidth()
-    screen_height = win.winfo_screenheight()
-    position_top = int(screen_height / 4 - window_height / 4)
-    position_right = int(screen_width / 2 - window_width / 2)
-    win.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
-    win.title('Forgot Password')
-    win.iconbitmap('images\\aa.ico')
-    win.configure(background='#f8f8f8')
-    win.resizable(0, 0)
-
-    # Variables
-    email = StringVar()
-    password = StringVar()
-    confirmPassword = StringVar()
-
-    # ====== Email ====================
-    email_entry2 = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2,
-                         textvariable=email)
-    email_entry2.place(x=40, y=30, width=256, height=34)
-    email_entry2.config(highlightbackground="black", highlightcolor="black")
-    email_label2 = Label(win, text='• Email account', fg="#89898b", bg='#f8f8f8',
-                         font=("yu gothic ui", 11, 'bold'))
-    email_label2.place(x=40, y=0)
-
-    # ====  New Password ==================
-    new_password_entry = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2,
-                               textvariable=password)
-    new_password_entry.place(x=40, y=110, width=256, height=34)
-    new_password_entry.config(highlightbackground="black", highlightcolor="black")
-    new_password_label = Label(win, text='• New Password', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
-    new_password_label.place(x=40, y=80)
-
-    # ====== checkbutton ==============
-    checkButton = Checkbutton(win, bg='#f8f8f8', command=password_command, text='show password')
-    checkButton.place(x=40, y=150)
-
-    # ====  Confirm Password ==================
-    confirm_password_entry = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2
-                                   , textvariable=confirmPassword)
-    confirm_password_entry.place(x=40, y=220, width=256, height=34)
-    confirm_password_entry.config(highlightbackground="black", highlightcolor="black")
-    confirm_password_label = Label(win, text='• Confirm Password', fg="#89898b", bg='#f8f8f8',
-                                   font=("yu gothic ui", 11, 'bold'))
-    confirm_password_label.place(x=40, y=180)
-
-    # ======= Update password Button ============
-    update_pass = Button(win, fg='#f8f8f8', text='Update Password', bg='#1b87d2', font=("yu gothic ui bold", 14),
-                         cursor='hand2', activebackground='#1b87d2', command=lambda: change_password())
-    update_pass.place(x=40, y=260, width=256, height=50)
-
-    # ========= DATABASE CONNECTION FOR FORGOT PASSWORD=====================
-    def change_password():
-        if new_password_entry.get() == confirm_password_entry.get():
-            db = sqlite3.connect("RegLog.db")
-            curs = db.cursor()
-
-            insert = '''update RegLog set Password=?, ConfirmPassword=? where Email=? '''
-            curs.execute(insert, [new_password_entry.get(), confirm_password_entry.get(), email_entry2.get(), ])
-            db.commit()
-            db.close()
-            messagebox.showinfo('Congrats', 'Password changed successfully')
-
-        else:
-            messagebox.showerror('Error!', "Passwords didn't match")
 
 
 forgotPassword = Button(design_frame4, text='Forgot password', font=("yu gothic ui", 8, "bold underline"), bg='#f8f8f8',
@@ -379,65 +396,5 @@ photo = ImageTk.PhotoImage(side_image)
 side_image_label = Label(design_frame7, image=photo, bg='#1e85d0')
 side_image_label.image = photo
 side_image_label.place(x=50, y=140)
-
-
-# =====================================================================================================================
-# =====================================================================================================================
-# ==================== DATABASE CONNECTION ============================================================================
-# =====================================================================================================================
-# =====================================================================================================================
-
-connection = sqlite3.connect('RegLog.db')
-cur = connection.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS RegLog(Email TEXT PRIMARY KEY, FullName TEXT, Password TEXT, "
-            "ConfirmPassword TEXT)")
-connection.commit()
-connection.close()
-
-
-def submit():
-    check_counter = 0
-    warn = ""
-    if name_entry.get() == "":
-        warn = "Full Name can't be empty"
-    else:
-        check_counter += 1
-
-    if email_entry.get() == "":
-        warn = "Email Field can't be empty"
-    else:
-        check_counter += 1
-
-    if password_entry.get() == "":
-        warn = "Password can't be empty"
-    else:
-        check_counter += 1
-
-    if confirmPassword_entry.get() == "":
-        warn = "Sorry, can't sign up make sure all fields are complete"
-    else:
-        check_counter += 1
-
-    if password_entry.get() != confirmPassword_entry.get():
-        warn = "Passwords didn't match!"
-    else:
-        check_counter += 1
-
-    if check_counter == 5:
-        try:
-            connection = sqlite3.connect("RegLog.db")
-            cur = connection.cursor()
-            cur.execute("INSERT INTO RegLog values(?,?,?,?)",
-                        (Email.get(), FullName.get(), Password.get(), ConfirmPassword.get()))
-
-            connection.commit()
-            connection.close()
-            messagebox.showinfo("Success", "New account created successfully")
-
-        except Exception as ep:
-            messagebox.showerror('', ep)
-    else:
-        messagebox.showerror('Error', warn)
-
 
 window.mainloop()
