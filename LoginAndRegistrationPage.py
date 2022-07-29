@@ -6,7 +6,8 @@ from tkinter import messagebox
 window = Tk()
 window.rowconfigure(0, weight=1)
 window.columnconfigure(0, weight=1)
-window.state('zoomed')
+window.geometry('1350x718')
+# window.state('zoomed')
 window.resizable(0, 0)
 window.title('Login and Registration Page')
 
@@ -23,6 +24,12 @@ for frame in (LoginPage, RegistrationPage):
 
 def show_frame(frame):
     frame.tkraise()
+
+# def password_command2():
+#     if password_entry.cget('show') == '•':
+#         password_entry.config(show='')
+#     else:
+#         password_entry.config(show='•')
 
 
 show_frame(LoginPage)
@@ -73,8 +80,12 @@ password_label.place(x=130, y=220)
 def password_command():
     if password_entry1.cget('show') == '•':
         password_entry1.config(show='')
+        password_entry.config(show='')
+        confirmPassword_entry.config(show='')
     else:
         password_entry1.config(show='•')
+        password_entry.config(show='•')
+        confirmPassword_entry.config(show='•')
 
 
 # ====== checkbutton ==============
@@ -86,9 +97,9 @@ SignUp_button = Button(LoginPage, text='Sign up', font=("yu gothic ui bold", 12)
                        command=lambda: show_frame(RegistrationPage), borderwidth=0, activebackground='#1b87d2', cursor='hand2')
 SignUp_button.place(x=1100, y=175)
 
-# ===== Welcome Label ==============
-welcome_label = Label(design_frame4, text='Welcome', font=('Arial', 20, 'bold'), bg='#f8f8f8')
-welcome_label.place(x=130, y=15)
+# # ===== Welcome Label ==============
+# welcome_label = Label(design_frame4, text='Welcome', font=('Arial', 20, 'bold'), bg='#f8f8f8')
+# welcome_label.place(x=130, y=15)
 
 # ======= top Login Button =========
 login_button = Button(LoginPage, text='Login', font=("yu gothic ui bold", 12), bg='#f8f8f8', fg="#89898b",
@@ -128,11 +139,11 @@ picture_icon_label.image = photo
 picture_icon_label.place(x=280, y=5)
 
 # ===== Left Side Picture ============
-side_image = Image.open('images\\vector.png')
+side_image = Image.open('images\\GEO1 An NV5 Company.png')
 photo = ImageTk.PhotoImage(side_image)
 side_image_label = Label(design_frame3, image=photo, bg='#1e85d0')
 side_image_label.image = photo
-side_image_label.place(x=50, y=10)
+side_image_label.place(x=50, y=140)
 
 
 # ============ LOGIN DATABASE CONNECTION =========
@@ -201,19 +212,23 @@ def forgot_password():
     new_password_label = Label(win, text='• New Password', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
     new_password_label.place(x=40, y=80)
 
+    # ====== checkbutton ==============
+    checkButton = Checkbutton(win, bg='#f8f8f8', command=password_command, text='show password')
+    checkButton.place(x=40, y=150)
+
     # ====  Confirm Password ==================
     confirm_password_entry = Entry(win, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2
                                    , textvariable=confirmPassword)
-    confirm_password_entry.place(x=40, y=190, width=256, height=34)
+    confirm_password_entry.place(x=40, y=220, width=256, height=34)
     confirm_password_entry.config(highlightbackground="black", highlightcolor="black")
     confirm_password_label = Label(win, text='• Confirm Password', fg="#89898b", bg='#f8f8f8',
                                    font=("yu gothic ui", 11, 'bold'))
-    confirm_password_label.place(x=40, y=160)
+    confirm_password_label.place(x=40, y=180)
 
     # ======= Update password Button ============
     update_pass = Button(win, fg='#f8f8f8', text='Update Password', bg='#1b87d2', font=("yu gothic ui bold", 14),
                          cursor='hand2', activebackground='#1b87d2', command=lambda: change_password())
-    update_pass.place(x=40, y=240, width=256, height=50)
+    update_pass.place(x=40, y=260, width=256, height=50)
 
     # ========= DATABASE CONNECTION FOR FORGOT PASSWORD=====================
     def change_password():
@@ -264,7 +279,7 @@ name_entry = Entry(design_frame8, fg="#a7a7a7", font=("yu gothic ui semibold", 1
                    textvariable=FullName)
 name_entry.place(x=284, y=150, width=286, height=34)
 name_entry.config(highlightbackground="black", highlightcolor="black")
-name_label = Label(design_frame8, text='•Full Name', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
+name_label = Label(design_frame8, text='First & Last Name', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
 name_label.place(x=280, y=120)
 
 # ======= Email ===========
@@ -285,20 +300,16 @@ password_label = Label(design_frame8, text='• Password', fg="#89898b", bg='#f8
 password_label.place(x=280, y=265)
 
 
-def password_command2():
-    if password_entry.cget('show') == '•':
-        password_entry.config(show='')
-    else:
-        password_entry.config(show='•')
 
 
-checkButton = Checkbutton(design_frame8, bg='#f8f8f8', command=password_command2, text='show password')
+
+checkButton = Checkbutton(design_frame8, bg='#f8f8f8', command=password_command, text='show password')
 checkButton.place(x=290, y=330)
 
 
 # ====== Confirm Password =============
 confirmPassword_entry = Entry(design_frame8, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2,
-                              textvariable=ConfirmPassword)
+                              textvariable=ConfirmPassword, show='•')
 confirmPassword_entry.place(x=284, y=385, width=286, height=34)
 confirmPassword_entry.config(highlightbackground="black", highlightcolor="black")
 confirmPassword_label = Label(design_frame8, text='• Confirm Password', fg="#89898b", bg='#f8f8f8',
@@ -313,9 +324,9 @@ SignUp_button.place(x=1100, y=175)
 SignUp_line = Canvas(RegistrationPage, width=60, height=5, bg='#1b87d2')
 SignUp_line.place(x=1100, y=203)
 
-# ===== Welcome Label ==================
-welcome_label = Label(design_frame8, text='Welcome', font=('Arial', 20, 'bold'), bg='#f8f8f8')
-welcome_label.place(x=130, y=15)
+# # ===== Welcome Label ==================
+# welcome_label = Label(design_frame8, text='Welcome', font=('Arial', 20, 'bold'), bg='#f8f8f8')
+# welcome_label.place(x=130, y=15)
 
 # ========= Login Button =========
 login_button = Button(RegistrationPage, text='Login', font=("yu gothic ui bold", 12), bg='#f8f8f8', fg="#89898b",
@@ -363,11 +374,11 @@ picture_icon_label.image = photo
 picture_icon_label.place(x=280, y=5)
 
 # ===== Left Side Picture ============
-side_image = Image.open('images\\vector.png')
+side_image = Image.open('images\\GEO1 An NV5 Company.png')
 photo = ImageTk.PhotoImage(side_image)
 side_image_label = Label(design_frame7, image=photo, bg='#1e85d0')
 side_image_label.image = photo
-side_image_label.place(x=50, y=10)
+side_image_label.place(x=50, y=140)
 
 
 # =====================================================================================================================
