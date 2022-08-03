@@ -307,6 +307,7 @@ class LoginClient(Tk):
         # self.withdraw()
 
         win = Toplevel()
+        win.grab_set()
         win.title('Forgot Password')
         win.iconbitmap('images\\aa.ico')
         win.configure(background='#f8f8f8')
