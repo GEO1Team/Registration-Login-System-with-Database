@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image  # type "Pip install pillow" in your terminal to install ImageTk and Image module
 from tkinter import messagebox
 from tkinter import font as tkfont 
+import runner
 
 
 class LoginClient(Tk):
@@ -54,9 +55,9 @@ class LoginClient(Tk):
         self.design_frame4.place(x=676, y=106)
 
         # ====== Email ====================
-        self.email_entry = Entry(self.design_frame4, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2)
-        self.email_entry.place(x=134, y=170, width=256, height=34)
-        self.email_entry.config(highlightbackground="black", highlightcolor="black")
+        self.email_entry_login = Entry(self.design_frame4, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2)
+        self.email_entry_login.place(x=134, y=170, width=256, height=34)
+        self.email_entry_login.config(highlightbackground="black", highlightcolor="black")
         self.email_label = Label(self.design_frame4, text='• Email account', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
         self.email_label.place(x=130, y=140)
 
@@ -280,11 +281,13 @@ class LoginClient(Tk):
             self.confirmPassword_entry.config(show='•')
 
     def login(self):
-        email = self.email_entry.get()
+        email = self.email_entry_login.get()
         password = self.password_entry1.get()
         result = email == "chandlertayek@gmail.com" and password =="123"
         # Check if their account is confirmed or not and ask for them to confirm
         # Let them confirm again
+        print(result)
+        print(email, password)
         print("Message if they need to confirm account")
         if result:
             messagebox.showinfo("Success", 'Logged in Successfully.')
@@ -456,3 +459,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    runner.run()
