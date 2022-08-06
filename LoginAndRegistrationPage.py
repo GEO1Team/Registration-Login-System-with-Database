@@ -4,7 +4,6 @@ from tkinter import messagebox
 from tkinter import font as tkfont 
 import runner
 
-
 class LoginClient(Tk):
     def __init__(self):
         super().__init__()
@@ -458,5 +457,7 @@ def main():
     login_client.mainloop()
 
 if __name__ == "__main__":
+    print("Starting Auth GUI ...")
     main()
-    runner.run()
+    print("Starting Tool ...")
+    # Call and run the tool creds/JWT

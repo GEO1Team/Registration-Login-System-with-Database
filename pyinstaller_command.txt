@@ -1,0 +1,1 @@
+pyinstaller -n my_first_geo1_app LoginAndRegistrationPage.py --add-data 'images;images'
