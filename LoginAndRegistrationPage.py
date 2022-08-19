@@ -1,8 +1,8 @@
 from tkinter import *
 from PIL import ImageTk, Image  # type "Pip install pillow" in your terminal to install ImageTk and Image module
 from tkinter import messagebox
-from tkinter import font as tkfont 
-import runner
+# from tkinter import font as tkfont 
+# import runner
 
 class LoginClient(Tk):
     def __init__(self):
@@ -61,24 +61,21 @@ class LoginClient(Tk):
         self.email_label.place(x=130, y=140)
 
         # ==== Password ==================
-        self.password_entry1 = Entry(self.design_frame4, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
-        self.password_entry1.place(x=134, y=250, width=256, height=34)
-        self.password_entry1.config(highlightbackground="black", highlightcolor="black")
         self.password_label = Label(self.design_frame4, text='• Password', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
         self.password_label.place(x=130, y=220)
-
-
-
-
+        self.password_entry_login = Entry(self.design_frame4, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
+        self.password_entry_login.place(x=134, y=250, width=256, height=34)
+        self.password_entry_login.config(highlightbackground="black", highlightcolor="black")
 
         # ====== checkbutton ==============
-        self.checkButton = Checkbutton(self.design_frame4, bg='#f8f8f8', command=self.password_command, text='show password')
-        self.checkButton.place(x=140, y=288)
+        self.checkButton_sign_in = Checkbutton(self.design_frame4, bg='#f8f8f8', command=self.password_command_sign_in, text='show password', variable='show_pass_sign_in')
+        self.checkButton_sign_in.place(x=140, y=288)
 
         # ========= Buttons ===============
         self.SignUp_button = Button(self.LoginPage, text='Sign up', font=("yu gothic ui bold", 12), bg='#f8f8f8', fg="#89898b",
                             command=lambda: self.show_frame(self.RegistrationPage), borderwidth=0, activebackground='#1b87d2', cursor='hand2')
         self.SignUp_button.place(x=1100, y=175)
+
 
         # ===== Welcome Label ==============
         # welcome_label = Label(design_frame4, text='Welcome', font=('Arial', 20, 'bold'), bg='#f8f8f8')
@@ -186,8 +183,8 @@ class LoginClient(Tk):
 
 
 
-        self.checkButton = Checkbutton(self.design_frame8, bg='#f8f8f8', command=self.password_command, text='show password')
-        self.checkButton.place(x=290, y=330)
+        self.check_button_sign_up = Checkbutton(self.design_frame8, bg='#f8f8f8', command=self.password_command_sign_up, text='show password', variable='show_password_sign_up')
+        self.check_button_sign_up.place(x=290, y=330)
 
 
         # ====== Confirm Password =============
@@ -269,19 +266,23 @@ class LoginClient(Tk):
         print("tkraised")
 
         # function for show and hide password
-    def password_command(self):
-        if self.password_entry1.cget('show') == '•':
-            self.password_entry1.config(show='')
+    def password_command_sign_in(self):
+        if self.password_entry_login.cget('show') == '•':
+            self.password_entry_login.config(show='')
+        else:
+            self.password_entry_login.config(show='•')
+
+    def password_command_sign_up(self):
+        if self.password_entry.cget('show') == '•':
             self.password_entry.config(show='')
             self.confirmPassword_entry.config(show='')
         else:
-            self.password_entry1.config(show='•')
             self.password_entry.config(show='•')
             self.confirmPassword_entry.config(show='•')
 
     def login(self):
         email = self.email_entry_login.get()
-        password = self.password_entry1.get()
+        password = self.password_entry_login.get()
         result = email == "chandlertayek@gmail.com" and password =="123"
         # Check if their account is confirmed or not and ask for them to confirm
         # Let them confirm again
@@ -297,9 +298,9 @@ class LoginClient(Tk):
 
     def show_frame2(self, page_name, controller):
         if page_name == 'InitalForgotPassWindow':
-            controller.geometry('320x300')
+            controller.geometry('320x250')
         elif page_name == 'ConfirmPass':
-            controller.geometry('320x500')
+            controller.geometry('320x260')
         else:
             exit()
         frame = self.frames[page_name]
@@ -312,10 +313,10 @@ class LoginClient(Tk):
         win.grab_set()
         win.title('Forgot Password')
         win.iconbitmap('images\\aa.ico')
-        win.configure(background='#f8f8f8')
+        win.configure()
         win.resizable(0, 0)
 
-        frame = Frame(win, bg='#f8f8f8')
+        frame = Frame(win)
         frame.pack(side="top", fill="both", expand=True)
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
@@ -341,6 +342,9 @@ class LoginClient(Tk):
 
         if self.email_entry.get() == "":
             warn = "Email Field can't be empty"
+        elif "@nv5.com" not in self.email_entry.get():
+            messagebox.showerror('Error', "Only @nv5.com emails allowed.")
+            return
         else:
             check_counter += 1
 
@@ -369,12 +373,18 @@ class InitalForgotPassWindow(Frame):
     def __init__(self, parent, controller, root):
         Frame.__init__(self, parent)
         self.controller = controller
-        label = Label(self, text="This is the Initial Pass reset page", font=("yu gothic ui semibold", 12))
+        label = Label(self, text="Type in the email associated with your\naccount that you want to reset\nyour password with.", font=("yu gothic ui semibold", 12))
         label.pack(side="top", fill="x", pady=10,)
-        button = Button(
-            self, text="Go to the start page",
-            command=lambda: root.show_frame2("ConfirmPass", controller))
-        button.pack()
+        email_label = Label(self, text='Email account', fg="#89898b", bg='#f8f8f8',
+                            font=("yu gothic ui", 11, 'bold'))
+        email_label.pack()
+        email_label = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2)
+        email_label.pack(pady=15)
+        email_label.config(highlightbackground="black", highlightcolor="black")
+        button = Button(self, fg='#f8f8f8', text='Send Password Reset Code', bg='#1b87d2', font=("yu gothic ui bold", 14),
+                            cursor='hand2', activebackground='#1b87d2', command=lambda: root.show_frame2("ConfirmPass", controller))
+        # button.pack(side="bottom", anchor = "w")
+        button.pack(side="bottom", pady=10)
         # label = Label(self, text="This is the start page", font=("yu gothic ui semibold", 12))
         # label.pack(side="top", fill="x", pady=10)
         # button1 = Button(self, text="Go to Page One",
@@ -391,50 +401,55 @@ class InitalForgotPassWindow(Frame):
         # position_top = int(screen_height / 4 - window_height / 4)
         # position_right = int(screen_width / 2 - window_width / 2)
         # win.geometry(f'{window_width}x{window_height}+{position_right}+{position_top}')
-
+        
 
 class ConfirmPass(Frame):
 
     def __init__(self, parent, controller, root):
         Frame.__init__(self, parent)
         self.controller = controller
-        label = Label(self, text="This is the ConfirmPass page", font=("yu gothic ui semibold", 12))
-        label.pack(side="top", fill="x", pady=10)
-        button = Button(
-            self, text="Go to the start page",
-            command=lambda: root.show_frame2("InitalForgotPassWindow", controller))
-        button.pack()
 
-        email_label2 = Label(self, text='• Email account', fg="#89898b", bg='#f8f8f8',
+        # ====  Code Entry ==================
+        code_label = Label(self, text='• Password Reset Code', fg="#89898b", bg='#f8f8f8',
                             font=("yu gothic ui", 11, 'bold'))
-        email_label2.pack()
-        email_entry2 = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2)
-        email_entry2.pack()
-        email_entry2.config(highlightbackground="black", highlightcolor="black")
+        code_label.pack()
+        code_entry = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), highlightthickness=2)
+        code_entry.pack()
+        code_entry.config(highlightbackground="black", highlightcolor="black")
         
         # ====  New Password ==================
         new_password_label = Label(self, text='• New Password', fg="#89898b", bg='#f8f8f8', font=("yu gothic ui", 11, 'bold'))
         new_password_label.pack()
-        new_password_entry = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
-        new_password_entry.place()
-        new_password_entry.config(highlightbackground="black", highlightcolor="black")
+        self.new_password_entry = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
+        self.new_password_entry.pack()
+        self.new_password_entry.config(highlightbackground="black", highlightcolor="black")
         
-        # ====== checkbutton ==============
-        checkButton_reset_pass = Checkbutton(self, name='reset_pass', bg='#f8f8f8', command=lambda: password_command2(), text='show password')
-        checkButton_reset_pass.pack()
-
         # ====  Confirm Password ==================
-        confirm_password_entry = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
-        confirm_password_entry.place(x=40, y=220, width=256, height=34)
-        confirm_password_entry.config(highlightbackground="black", highlightcolor="black")
         confirm_password_label = Label(self, text='• Confirm Password', fg="#89898b", bg='#f8f8f8',
                                     font=("yu gothic ui", 11, 'bold'))
-        confirm_password_label.place(x=40, y=180)
+        confirm_password_label.pack()
+        self.confirm_password_entry = Entry(self, fg="#a7a7a7", font=("yu gothic ui semibold", 12), show='•', highlightthickness=2)
+        self.confirm_password_entry.pack()
+        self.confirm_password_entry.config(highlightbackground="black", highlightcolor="black")
+
+        # ====== checkbutton ==============
+        self.checkButton_reset_pass = Checkbutton(self, name='reset_pass', bg='#f8f8f8', command=lambda: password_command2(), text='show password')
+        self.checkButton_reset_pass.pack()
+        self.checkButton_reset_pass.deselect()
 
         # ======= Update password Button ============
         update_pass = Button(self, fg='#f8f8f8', text='Update Password', bg='#1b87d2', font=("yu gothic ui bold", 14),
                             cursor='hand2', activebackground='#1b87d2')
-        update_pass.place(x=40, y=260, width=256, height=50)
+        update_pass.pack()
+
+
+        def password_command2():
+            if self.new_password_entry.cget('show') == '•':
+                self.new_password_entry.config(show='')
+                self.confirm_password_entry.config(show='')
+            else:
+                self.new_password_entry.config(show='•')
+                self.confirm_password_entry.config(show='•')
 
 # def change_password():
 #     if new_password_entry.get() == confirm_password_entry.get():
@@ -443,13 +458,7 @@ class ConfirmPass(Frame):
 #     else:
 #         messagebox.showerror('Error!', "Passwords didn't match", parent=win)
 
-# def password_command2():
-#     if new_password_entry.cget('show') == '•':
-#         new_password_entry.config(show='')
-#         confirm_password_entry.config(show='')
-#     else:
-#         new_password_entry.config(show='•')
-#         confirm_password_entry.config(show='•')
+
 
 
 def main():

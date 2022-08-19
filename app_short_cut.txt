@@ -1,0 +1,1 @@
+target = %COMSPEC% /C START "" "%CD%\app\app.exe"
